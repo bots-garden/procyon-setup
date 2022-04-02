@@ -11,7 +11,7 @@ source $HOME/.wasmedge/env
 git clone https://github.com/suborbital/sat.git
 cd sat
 go build -o .bin/sat -tags netgo,wasmedge .
-cp sat ..procyon/executors
+cp sat ../procyon/executors
 cd ..
 rm -rf sat
 

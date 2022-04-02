@@ -4,9 +4,10 @@
 > - You can test the setup by opening it with Gitpod
 [![Open in GitPod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/bots-garden/procyon-setup)
 
-
-What is procyon
-Source code
+🚧 This is a work in progress
+> - Make a diagram
+> - What is procyon
+> - Source code
 
 
 ## Procyon components
@@ -54,5 +55,49 @@ To create wasm modules for **Sat**, you need the **[Subo CLI](https://github.com
 > - This command will install Subo
 > - Requirement for the amd64 version: you need to install **[Brew](https://docs.brew.sh/Homebrew-on-Linux)** before running the setup of **Subo**
 
+## Start Procyon stack (or Procyon components)
+
+```bash
+nohup ./start-venusia.sh &
+nohup ./start-alcor.sh &
+nohup ./start-procyon.sh &
+```
+
 ## Create a Runnable for Sat
 
+```bash
+subo create runnable hello --lang tinygo
+cd hello
+subo build .
+```
+
+### Publish the Runnable to Venusia
+
+```bash
+curl -v \
+  -F "file=@./hello/hello.wasm" \
+	-H "Content-Type: multipart/form-data" \
+	-X POST https://localhost:9999/wasm/upload
+```
+
+### Launch a Sat task to serve the Runnable
+
+```bash
+curl -v --request POST \
+  --header 'Content-Type: application/json' \
+  --data '{
+      "executor": 1,
+      "wasmFileName": "hello.wasm",
+      "wasmRegistryUrl": "https://localhost:9999/wasm/download/hello.wasm",
+      "functionName": "hello",
+      "functionRevision": "first",
+      "defaultRevision": true
+    }
+  ' http://localhost:9090/tasks
+```
+
+### Call the function
+
+```bash
+curl -X POST -d 'Jane' http://localhost:8080/functions/hello; echo ""
+```

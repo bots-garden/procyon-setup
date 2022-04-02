@@ -100,8 +100,9 @@ Procyon is a Sat orchestrator
 Commands:
 - procyonctl task deploy hello.wasm hello rev1
   procyonctl task deploy hey.wasm hey rev1
+- procyonctl task list
+- procyonctl task kill a6419ab3-fbe4-4f5e-92ea-c832d8869090
 - procyonctl task help
-
 '
 
 function procyon_task_deploy() {
@@ -119,13 +120,23 @@ function procyon_task_deploy() {
       "defaultRevision": true
     }
   ' ${PROCYON_URL}/tasks
-
 }
 
 if [[ "$1" == "task" ]]; then
 
   if [[ "$2" == "help" ]]; then
     echo "🚧 work in progress"
+    exit 0
+  fi
+
+  if [[ "$2" == "list" ]]; then
+    curl ${PROCYON_URL}/tasks
+    exit 0
+  fi
+
+  if [[ "$2" == "kill" ]]; then
+    task_id=$3
+    curl -v --request DELETE ${PROCYON_URL}/tasks/${task_id}
     exit 0
   fi
 
@@ -136,7 +147,6 @@ if [[ "$1" == "task" ]]; then
     procyon_task_deploy ${wasm_file} ${function_name} ${function_revision}
     exit 0
   fi
-
 
   echo "🤔 please try again, I don't understand"
 fi
@@ -150,8 +160,8 @@ Procyon is a Sat orchestrator
 Commands:
 - procyonctl func call hello 'Jane Doe'
 - procyonctl func callrev hello rev1 'John Doe'
+- procyonctl func list
 - procyonctl func help
-
 '
 function procyon_func_call() {
   function_name=$1
@@ -173,6 +183,11 @@ if [[ "$1" == "func" ]]; then
     exit 0
   fi
 
+  if [[ "$2" == "list" ]]; then
+    curl ${PROCYON_URL}/functions
+    exit 0
+  fi
+
   if [[ "$2" == "call" ]]; then
     function_name=$3
     data=$4
@@ -190,3 +205,5 @@ if [[ "$1" == "func" ]]; then
 
   echo "🤔 please try again, I don't understand"
 fi
+
+#http http://localhost:9090/tasks

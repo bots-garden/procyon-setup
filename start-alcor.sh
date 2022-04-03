@@ -3,4 +3,5 @@
 # Start Alcor
 # ------------------------------------
 cd alcor
+PROXY_HTTP=8080 \
 ./alcor

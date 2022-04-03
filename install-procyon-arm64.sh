@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RELEASE="0.0.7"
+RELEASE="0.0.8"
 ARCHITECTURE="arm64"
 
 # ------------------------------------

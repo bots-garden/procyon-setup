@@ -8,3 +8,5 @@ alcor-*.tar.gz
 nohup.out
 hello/*
 hey/*
+procyon.config
+procyonctl

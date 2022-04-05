@@ -101,3 +101,17 @@ curl -v --request POST \
 ```bash
 curl -X POST -d 'Jane' http://localhost:8080/functions/hello; echo ""
 ```
+
+### Procyonctl
+
+> Publish to the registry
+```bash
+./procyonctl venusia publish hello-go/hello-go.wasm  hello-go 0.0.0
+```
+
+> Deploy to Procyon
+```bash
+./procyonctl task deploy hello-go-0.0.0.wasm hello-go rev1
+./procyonctl task switch-func-revision hello-go rev1
+./procyonctl func call hello-go 'Jane Doe'
+```
